@@ -64,6 +64,21 @@ const Posts = bookshelf.Model.extend({
   hasTimeStamps: true,
 });
 
+// ***** Server ***** //
+
+app.post('/user', (req, res) => {
+  if (_.isEmpty(req.body))
+    return;
+  User
+    .forge(req.body)
+    .save()
+    .then((usr) => {
+      res.send(usr);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
 
 // ***** Module Exports ***** //
 
