@@ -3,9 +3,6 @@
 const _      = require('lodash');
 const expect = require('unexpected');
 
-// Set mode to testing.
-process.env.TESTING = true;
-
 const blog = require('../blog_server');
 
 let mockUser = {
@@ -15,14 +12,6 @@ let mockUser = {
 };
 
 describe('Models', () => {
-
-  before(() => {
-    blog.up();
-  });
-
-  after(() => {
-    blog.tearDown();
-  });
 
   it('necessary models exist', (done) => {
     expect(blog.User, 'to be defined');
