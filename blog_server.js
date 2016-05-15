@@ -54,6 +54,8 @@ const destroySchema = () => {
   ]);
 };
 
+// ***** Models ***** //
+
 const User = bookshelf.Model.extend({
   tableName: 'users',
   hasTimeStamps: true,
