@@ -1,8 +1,13 @@
 "use strict";
 
-const dbName = process.env.TESTING ? 'learnco_blog_test' : 'learnco_blog';
+const _            = require('lodash');
+const express      = require('express');
+const bodyParser   = require('body-parser');
 
-console.log('dbName:', dbName);
+const app = express();
+app.use(bodyParser.json());
+
+const dbName = process.env.TESTING ? 'learnco_blog_test' : 'learnco_blog';
 
 // ***** Knex & Bookshelf Configuration ***** //
 
@@ -59,9 +64,27 @@ const Posts = bookshelf.Model.extend({
   hasTimeStamps: true,
 });
 
-const up = () => {
-  setupSchema().then(() => {
+
+// ***** Module Exports ***** //
+
+const listen = (port) => {
+  return new Promise((resolve, reject) => {
+    app.listen(port, () => {
+      resolve();
+    });
+  });
+};
+
+const up = (justBackend) => {
+  justBackend = _.isUndefined(justBackend) ? false : justBackend;
+  return setupSchema().then(() => {
     console.log('Done building schema...');
+  }).then(() => {
+    if(justBackend)
+      return;
+    return listen(3000);
+  }).then(() => {
+    console.log('Listening on port 3000...');
   }).catch((error) => {
     console.error(error);
   });
