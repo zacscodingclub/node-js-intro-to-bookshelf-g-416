@@ -49,10 +49,7 @@ const setupSchema = () => {
 };
 
 const destroySchema = () => {
-  return Promise.all([
-    knex.schema.dropTable('users'),
-    knex.schema.dropTable('posts')
-  ]);
+  return knex.schema.dropTable('posts').dropTable('users');
 };
 
 // ***** Models ***** //
