@@ -73,6 +73,20 @@ const Posts = bookshelf.Model.extend({
 
 // ***** Server ***** //
 
+app.get('/user/:id', (req,res) => {
+  if (_.isUndefined(req.params.id))
+    return;
+  User
+    .forge({id: req.params.id})
+    .fetch()
+    .then((usr) => {
+      res.send(usr);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
+
 app.post('/user', (req, res) => {
   if (_.isEmpty(req.body))
     return;

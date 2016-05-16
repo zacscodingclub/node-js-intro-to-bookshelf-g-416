@@ -36,6 +36,30 @@ describe('Server', () => {
       });
   });
 
+  it('GET to /user/:id with id specified returns usr object', (done) => {
+    request(baseUrl)
+      .get('/user/' + mockUser.id)
+      .send(mockUser)
+      .expect(200)
+      .end((err, resp) => {
+        if (err) done(err);
+        expect(resp.body, 'to have keys', [
+          'id',
+          'name',
+          'username',
+          'email',
+          'created_at',
+          'updated_at',
+        ]);
+        expect(resp.body.id, 'to be a', 'number');
+        expect(resp.body.id, 'to be', mockUser.id);
+        expect(resp.body.name, 'to be', mockUser.name);
+        expect(resp.body.username, 'to be', mockUser.username);
+        expect(resp.body.email, 'to be', mockUser.email);
+        done();
+      });
+  });
+
   it('POST to /post with post data returns new post id', (done) => {
     mockPost.user_id = mockUser.id;
     request(baseUrl)
