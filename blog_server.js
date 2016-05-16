@@ -7,7 +7,8 @@ const bodyParser   = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-const dbName = process.env.TESTING ? 'learnco_blog_test' : 'learnco_blog';
+const dbName = process.env.NODE_ENV ? 'learnco_blog_test' : 'learnco_blog';
+console.log('Using database: ', dbName);
 
 // ***** Knex & Bookshelf Configuration ***** //
 
