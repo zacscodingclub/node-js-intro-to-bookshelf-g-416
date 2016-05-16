@@ -17,7 +17,7 @@ const knex = require('knex')({
   connection: {
     database: dbName
   },
-  // debug: true
+  debug: true
 });
 
 const pg = require('knex')({
@@ -111,7 +111,7 @@ const up = (justBackend) => {
 const tearDown = () => {
   if(!process.env.TESTING)
     return;
-  destroySchema().then(() => {
+  return destroySchema().then(() => {
     console.log('Schema destroyed.');
   }).catch((error) => {
     console.error(error);
