@@ -33,7 +33,7 @@ const pg = require('knex')({
 const setupSchema = () => {
   return Promise.all([
     knex.schema.createTableIfNotExists('users', (tbl) => {
-      tbl.increments();
+      tbl.increments('id').primary();
       tbl.string('name');
       tbl.string('username');
       tbl.string('email');
@@ -43,6 +43,7 @@ const setupSchema = () => {
       tbl.increments();
       tbl.string('title');
       tbl.string('body');
+      tbl.integer('user_id').references('users.id');
       tbl.timestamps();
     })
   ]);
@@ -56,12 +57,18 @@ const destroySchema = () => {
 
 const User = bookshelf.Model.extend({
   tableName: 'users',
-  hasTimeStamps: true,
+  hasTimestamps: true,
+  posts: () => {
+    return this.hasMany(Posts);
+  },
 });
 
 const Posts = bookshelf.Model.extend({
   tableName: 'posts',
-  hasTimeStamps: true,
+  hasTimestamps: true,
+  author: () => {
+    return this.belongsTo(User);
+  },
 });
 
 // ***** Server ***** //
