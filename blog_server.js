@@ -86,6 +86,15 @@ app.post('/user', (req, res) => {
       console.error(error);
     });
 });
+
+app.post('/post', (req, res) => {
+  if(_.isEmpty(req.body))
+    return;
+  Posts
+    .forge(req.body)
+    .save()
+    .then((post) => {
+      res.send({id: post.id});
     })
     .catch((error) => {
       console.error(error);

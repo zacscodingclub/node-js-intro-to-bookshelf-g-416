@@ -15,6 +15,11 @@ let mockUser = {
   email: 'sally@example.org'
 };
 
+let mockPost = {
+  title: 'Test Post',
+  body: 'This is just a test post with no content.'
+};
+
 describe('Server', () => {
 
   it('POST to /user with user data returns new user id', (done) => {
@@ -28,6 +33,23 @@ describe('Server', () => {
         expect(resp.body.id, 'to be a', 'number');
         done();
       });
+  });
+
+  it('POST to /post with post data returns new post id', (done) => {
+    blog.User.forge({username: 'sally'}).fetch().then((usr) => {
+      mockPost.user_id = usr.id;
+      request(baseUrl)
+        .post('/post')
+        .send(mockPost)
+        .expect(200)
+        .end((err, resp) => {
+          if (err) done(err);
+          expect(resp.body, 'to have key', 'id');
+          expect(resp.body.id, 'to be a', 'number');
+          done();
+        });
+    });
+
   });
 
 });
