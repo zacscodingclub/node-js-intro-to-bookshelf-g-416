@@ -80,7 +80,12 @@ app.post('/user', (req, res) => {
     .forge(req.body)
     .save()
     .then((usr) => {
-      res.send(usr);
+      res.send({id: usr.id});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
     })
     .catch((error) => {
       console.error(error);

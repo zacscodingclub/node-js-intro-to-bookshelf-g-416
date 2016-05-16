@@ -17,23 +17,15 @@ let mockUser = {
 
 describe('Server', () => {
 
-  it('POST to /user with user data returns new user', (done) => {
+  it('POST to /user with user data returns new user id', (done) => {
     request(baseUrl)
       .post('/user')
       .send(mockUser)
       .expect(200)
       .end((err, resp) => {
         if (err) done(err);
-        expect(resp.body, 'to have keys', [
-          'id',
-          'username',
-          'email',
-          'name',
-        ]);
+        expect(resp.body, 'to have key', 'id');
         expect(resp.body.id, 'to be a', 'number');
-        expect(resp.body.name, 'to be', 'Sally Low');
-        expect(resp.body.username, 'to be', 'sally');
-        expect(resp.body.email, 'to be', 'sally@example.org');
         done();
       });
   });
