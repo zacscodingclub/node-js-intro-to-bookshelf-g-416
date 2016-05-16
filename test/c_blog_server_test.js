@@ -30,6 +30,7 @@ describe('Server', () => {
           'email',
           'name',
         ]);
+        expect(resp.body.id, 'to be a', 'number');
         expect(resp.body.name, 'to be', 'Sally Low');
         expect(resp.body.username, 'to be', 'sally');
         expect(resp.body.email, 'to be', 'sally@example.org');
