@@ -17,7 +17,7 @@ let mockUser = {
 
 describe('Server', () => {
 
-  it('POST /user with user data returns new user', (done) => {
+  it('POST to /user with user data returns new user', (done) => {
     request(baseUrl)
       .post('/user')
       .send(mockUser)
