@@ -122,6 +122,19 @@ describe('Server', () => {
       });
   });
 
+  it('GET to /posts returns a list of all the posts', (done) => {
+    request(baseUrl)
+      .get('/posts')
+      .expect(200)
+      .end((err, resp) => {
+        if (err) return done(err);
+        console.log(resp.body);
+        expect(resp.body, 'to be a', 'array');
+        expect(resp.body, 'to have length', 2);
+        done();
+      });
+  });
+
   it('GET to /post/:id with non-existant user id specified returns 404', (done) => {
     request(baseUrl)
       .get('/post/' + 7009)

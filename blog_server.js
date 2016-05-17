@@ -130,9 +130,19 @@ app.post('/user', (req, res) => {
     });
 });
 
+app.get('/posts', (req, res) => {
+  Posts
+    .collection()
+    .fetch()
+    .then((posts) => {
+      res.send(posts);
+    })
+    .catch((error) => {
+      res.sendStatus(500);
+    });
+});
+
 app.get('/post/:id', (req,res) => {
-  if(_.isUndefined(req.params.id))
-    return;
   Posts
     .forge({id: req.params.id})
     .fetch({withRelated: ['author', 'comments']})
