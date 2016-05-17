@@ -26,7 +26,7 @@ let mockComment = {
 
 describe('Server', () => {
 
-  it('POST to /user with user data returns new user id', (done) => {
+  it('POST to /user with valid data returns new user id', (done) => {
     request(baseUrl)
       .post('/user')
       .send(mockUser)
