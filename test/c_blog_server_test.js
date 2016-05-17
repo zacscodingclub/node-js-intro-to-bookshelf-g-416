@@ -128,7 +128,6 @@ describe('Server', () => {
       .expect(200)
       .end((err, resp) => {
         if (err) return done(err);
-        console.log(resp.body);
         expect(resp.body, 'to be a', 'array');
         expect(resp.body, 'to have length', 2);
         done();
