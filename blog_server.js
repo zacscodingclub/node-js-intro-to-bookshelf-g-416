@@ -49,8 +49,8 @@ const setupSchema = () => {
     knex.schema.createTableIfNotExists('comments', (tbl) => {
       tbl.increments().primary();
       tbl.string('body');
-      tbl.integer('author').references('users.id');
-      tbl.integer('post').references('posts.id');
+      tbl.integer('user_id').references('users.id');
+      tbl.integer('post_id').references('posts.id');
       tbl.timestamps();
     })
   ]);
@@ -72,7 +72,7 @@ const User = bookshelf.Model.extend({
     return this.hasMany(Posts, 'author');
   },
   comments: function() {
-    return this.hasMany(Comments, 'commenter');
+    return this.hasMany(Comments);
   },
 });
 
@@ -90,8 +90,8 @@ const Posts = bookshelf.Model.extend({
 const Comments = bookshelf.Model.extend({
   tableName: 'comments',
   hasTimestamps: true,
-  commenter: function() {
-    return this.belongsTo(User, 'commenter');
+  user: function() {
+    return this.belongsTo(User);
   },
   post: function() {
     return this.belongsTo(Posts);
@@ -133,7 +133,7 @@ app.get('/post/:id', (req,res) => {
     return;
   Posts
     .forge({id: req.params.id})
-    .fetch({withRelated: 'author'})
+    .fetch({withRelated: ['author', 'comments']})
     .then((post) => {
       res.send(post);
     });
@@ -150,6 +150,21 @@ app.post('/post', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
+    });
+});
+
+app.post('/comment', (req, res) => {
+  if (_.isEmpty(req.body))
+    return res.sendStatus(400);
+  Comments
+    .forge(req.body)
+    .save()
+    .then((comment) => {
+      res.send({id: comment.id});
+    })
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(500);
     });
 });
 

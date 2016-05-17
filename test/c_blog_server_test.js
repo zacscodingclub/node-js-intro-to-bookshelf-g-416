@@ -20,6 +20,10 @@ let mockPost = {
   body: 'This is just a test post with no content.'
 };
 
+let mockComment = {
+  body: 'This is just a test comment.'
+};
+
 describe('Server', () => {
 
   it('POST to /user with user data returns new user id', (done) => {
@@ -100,5 +104,40 @@ describe('Server', () => {
       });
   });
 
+  it('POST to /comment with valid data returns new comment id', (done) => {
+    mockComment.user_id = mockUser.id;
+    mockComment.post_id = mockPost.id;
+    request(baseUrl)
+      .post('/comment')
+      .send(mockComment)
+      .expect(200)
+      .end((err, resp) => {
+        if (err) done(err);
+        expect(resp.body, 'to have key', 'id');
+        expect(resp.body.id, 'to be a', 'number');
+        done();
+      });
+  });
+
+  it('POST to /comment with empty data returns 400', (done) => {
+    request(baseUrl)
+      .post('/comment')
+      .send({})
+      .expect(400, done);
+  });
+
+  it('GET to /post/:id where post has comment includes comments in response',
+    (done) => {
+      request(baseUrl)
+      .get('/post/' + mockPost.id)
+      .expect(200)
+      .end((err, resp) => {
+        if (err) done(err);
+        expect(resp.body, 'to have key', 'comments');
+        expect(resp.body.comments, 'to be a', 'array');
+        expect(resp.body.comments, 'to have length', 1);
+        done();
+    });
+  });
 
 });

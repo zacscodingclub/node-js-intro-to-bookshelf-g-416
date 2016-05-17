@@ -17,7 +17,6 @@ let mockPost = {
 };
 
 let mockComment = {
-  author: 1,
   body: 'This is a test comment.',
 };
 
@@ -75,8 +74,8 @@ describe('Models', () => {
   });
 
   it('Comments model can save a comment on a post', (done) => {
-    mockComment.post = mockPost.id;
-    mockComment.author = mockUser.id;
+    mockComment.post_id = mockPost.id;
+    mockComment.user_id = mockUser.id;
     blog.Comments
       .forge(mockComment)
       .save()
@@ -84,7 +83,7 @@ describe('Models', () => {
       .then((comment) => {
         expect(comment.attributes, 'to have keys', [
           'id',
-          'author',
+          'user_id',
           'body',
           'created_at',
           'updated_at',
