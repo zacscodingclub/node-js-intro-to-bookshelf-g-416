@@ -111,6 +111,7 @@ app.get('/user/:id', (req,res) => {
     })
     .catch((error) => {
       console.error(error);
+      return res.sendStatus(500);
     });
 });
 
@@ -125,6 +126,7 @@ app.post('/user', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
+      return res.sendStatus(500);
     });
 });
 
@@ -138,6 +140,10 @@ app.get('/post/:id', (req,res) => {
       if (_.isEmpty(post))
         return res.sendStatus(404);
       res.send(post);
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.sendStatus(500);
     });
 });
 
@@ -152,6 +158,7 @@ app.post('/post', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
+      return res.sendStatus(500);
     });
 });
 
