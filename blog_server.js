@@ -101,12 +101,12 @@ const Comments = bookshelf.Model.extend({
 // ***** Server ***** //
 
 app.get('/user/:id', (req,res) => {
-  if (_.isUndefined(req.params.id))
-    return;
   User
     .forge({id: req.params.id})
     .fetch()
     .then((usr) => {
+      if (_.isEmpty(usr))
+        return res.sendStatus(404);
       res.send(usr);
     })
     .catch((error) => {
@@ -116,7 +116,7 @@ app.get('/user/:id', (req,res) => {
 
 app.post('/user', (req, res) => {
   if (_.isEmpty(req.body))
-    return;
+    return res.sendStatus(400);
   User
     .forge(req.body)
     .save()
@@ -135,13 +135,15 @@ app.get('/post/:id', (req,res) => {
     .forge({id: req.params.id})
     .fetch({withRelated: ['author', 'comments']})
     .then((post) => {
+      if (_.isEmpty(post))
+        return res.sendStatus(404);
       res.send(post);
     });
 });
 
 app.post('/post', (req, res) => {
   if(_.isEmpty(req.body))
-    return;
+    return res.sendStatus(400);
   Posts
     .forge(req.body)
     .save()

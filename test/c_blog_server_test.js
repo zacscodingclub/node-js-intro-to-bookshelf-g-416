@@ -40,6 +40,13 @@ describe('Server', () => {
       });
   });
 
+  it('POST to /user with invalid data returns 400', (done) => {
+    request(baseUrl)
+      .post('/user')
+      .send({})
+      .expect(400, done);
+  });
+
   it('GET to /user/:id with id specified returns usr object', (done) => {
     request(baseUrl)
       .get('/user/' + mockUser.id)
@@ -63,6 +70,12 @@ describe('Server', () => {
       });
   });
 
+  it('GET to /user/:id with non-existant user specified returns 404', (done) => {
+    request(baseUrl)
+      .get('/user/' + 7009)
+      .expect(404, done);
+  });
+
   it('POST to /post with post data returns new post id', (done) => {
     mockPost.author = mockUser.id;
     request(baseUrl)
@@ -76,6 +89,13 @@ describe('Server', () => {
         mockPost.id = resp.body.id;
         done();
       });
+  });
+
+  it('POST to /post with invalid data returns 400', (done) => {
+    request(baseUrl)
+      .post('/post')
+      .send({})
+      .expect(400, done);
   });
 
   it('GET to /post/:id with id specified returns post object', (done) => {
@@ -100,6 +120,12 @@ describe('Server', () => {
         expect(resp.body.author.name, 'to be', mockUser.name);
         done();
       });
+  });
+
+  it('GET to /post/:id with non-existant user id specified returns 404', (done) => {
+    request(baseUrl)
+      .get('/post/' + 7009)
+      .expect(404, done);
   });
 
   it('POST to /comment with valid data returns new comment id', (done) => {
