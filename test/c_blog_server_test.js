@@ -43,7 +43,6 @@ describe('Server', () => {
   it('GET to /user/:id with id specified returns usr object', (done) => {
     request(baseUrl)
       .get('/user/' + mockUser.id)
-      .send(mockUser)
       .expect(200)
       .end((err, resp) => {
         if (err) done(err);
@@ -82,7 +81,6 @@ describe('Server', () => {
   it('GET to /post/:id with id specified returns post object', (done) => {
     request(baseUrl)
       .get('/post/' + mockPost.id)
-      .send(mockUser)
       .expect(200)
       .end((err, resp) => {
         if (err) done(err);
