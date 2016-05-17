@@ -40,17 +40,27 @@ const setupSchema = () => {
       tbl.timestamps();
     }),
     knex.schema.createTableIfNotExists('posts', (tbl) => {
-      tbl.increments();
+      tbl.increments().primary();
       tbl.string('title');
       tbl.string('body');
       tbl.integer('author').references('users.id');
+      tbl.timestamps();
+    }),
+    knex.schema.createTableIfNotExists('comments', (tbl) => {
+      tbl.increments().primary();
+      tbl.string('body');
+      tbl.integer('author').references('users.id');
+      tbl.integer('post').references('posts.id');
       tbl.timestamps();
     })
   ]);
 };
 
 const destroySchema = () => {
-  return knex.schema.dropTable('posts').dropTable('users');
+  return knex.schema
+    .dropTable('comments')
+    .dropTable('posts')
+    .dropTable('users');
 };
 
 // ***** Models ***** //
@@ -61,14 +71,30 @@ const User = bookshelf.Model.extend({
   posts: function() {
     return this.hasMany(Posts, 'author');
   },
+  comments: function() {
+    return this.hasMany(Comments, 'commenter');
+  },
 });
 
 const Posts = bookshelf.Model.extend({
   tableName: 'posts',
   hasTimestamps: true,
   author: function() {
-    var r =  this.belongsTo(User, 'author');
-    return r;
+    return this.belongsTo(User, 'author');
+  },
+  comments: function() {
+    return this.hasMany(Comments);
+  },
+});
+
+const Comments = bookshelf.Model.extend({
+  tableName: 'comments',
+  hasTimestamps: true,
+  commenter: function() {
+    return this.belongsTo(User, 'commenter');
+  },
+  post: function() {
+    return this.belongsTo(Posts);
   },
 });
 
@@ -165,6 +191,7 @@ const tearDown = () => {
 module.exports = {
   'User': User,
   'Posts': Posts,
+  'Comments': Comments,
   'up': up,
   'tearDown': tearDown
 };

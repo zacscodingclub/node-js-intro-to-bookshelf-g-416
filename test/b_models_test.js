@@ -14,14 +14,27 @@ let mockUser = {
 let mockPost = {
   title: 'My Test Post',
   body: 'This is just a test post with no real content.',
-  author: 1
+};
+
+let mockComment = {
+  author: 1,
+  body: 'This is a test comment.',
 };
 
 describe('Models', () => {
 
   it('necessary models exist', (done) => {
     expect(blog.User, 'to be defined');
+    done();
+  });
+
+  it('Posts model exists', (done) => {
     expect(blog.Posts, 'to be defined');
+    done();
+  });
+
+  it('Comments model exists', (done) => {
+    expect(blog.Comments, 'to be defined');
     done();
   });
 
@@ -38,22 +51,43 @@ describe('Models', () => {
         expect(usr.get('name'), 'to be', mockUser.name);
         expect(usr.get('email'), 'to be', mockUser.email);
         expect(usr.get('username'), 'to be', mockUser.username);
+        mockUser.id = usr.get('id');
         done();
       });
   });
 
   it('Posts model can save a post', (done) => {
+    mockPost.author = mockUser.id;
     blog.Posts
       .forge(mockPost)
       .save()
       .catch((err) => { done(err); })
       .then((post) => {
         expect(post.attributes, 'to have keys', [
-          'id',
           'title',
           'body',
+          'id',
           'author',
+        ]);
+        mockPost.id = post.get('id');
+        done();
+      });
+  });
+
+  it('Comments model can save a comment on a post', (done) => {
+    mockComment.post = mockPost.id;
+    mockComment.author = mockUser.id;
+    blog.Comments
+      .forge(mockComment)
+      .save()
+      .catch((err) => { done(err); })
+      .then((comment) => {
+        expect(comment.attributes, 'to have keys', [
+          'id',
+          'author',
+          'body',
           'created_at',
+          'updated_at',
         ]);
         done();
       });
