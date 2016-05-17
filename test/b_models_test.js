@@ -14,7 +14,7 @@ let mockUser = {
 let mockPost = {
   title: 'My Test Post',
   body: 'This is just a test post with no real content.',
-  user_id: 1
+  author: 1
 };
 
 describe('Models', () => {
@@ -52,7 +52,7 @@ describe('Models', () => {
           'id',
           'title',
           'body',
-          'user_id',
+          'author',
           'created_at',
         ]);
         done();

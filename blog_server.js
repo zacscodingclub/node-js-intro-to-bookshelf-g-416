@@ -43,7 +43,7 @@ const setupSchema = () => {
       tbl.increments();
       tbl.string('title');
       tbl.string('body');
-      tbl.integer('user_id').references('users.id');
+      tbl.integer('author').references('users.id');
       tbl.timestamps();
     })
   ]);
@@ -58,16 +58,17 @@ const destroySchema = () => {
 const User = bookshelf.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
-  posts: () => {
-    return this.hasMany(Posts);
+  posts: function() {
+    return this.hasMany(Posts, 'author');
   },
 });
 
 const Posts = bookshelf.Model.extend({
   tableName: 'posts',
   hasTimestamps: true,
-  author: () => {
-    return this.belongsTo(User);
+  author: function() {
+    var r =  this.belongsTo(User, 'author');
+    return r;
   },
 });
 
@@ -98,6 +99,17 @@ app.post('/user', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
+    });
+});
+
+app.get('/post/:id', (req,res) => {
+  if(_.isUndefined(req.params.id))
+    return;
+  Posts
+    .forge({id: req.params.id})
+    .fetch({withRelated: 'author'})
+    .then((post) => {
+      res.send(post);
     });
 });
 

@@ -61,7 +61,7 @@ describe('Server', () => {
   });
 
   it('POST to /post with post data returns new post id', (done) => {
-    mockPost.user_id = mockUser.id;
+    mockPost.author = mockUser.id;
     request(baseUrl)
       .post('/post')
       .send(mockPost)
@@ -70,8 +70,35 @@ describe('Server', () => {
         if (err) done(err);
         expect(resp.body, 'to have key', 'id');
         expect(resp.body.id, 'to be a', 'number');
+        mockPost.id = resp.body.id;
         done();
       });
   });
+
+  it('GET to /post/:id with id specified returns post object', (done) => {
+    request(baseUrl)
+      .get('/post/' + mockPost.id)
+      .send(mockUser)
+      .expect(200)
+      .end((err, resp) => {
+        if (err) done(err);
+        expect(resp.body, 'to have keys', [
+          'id',
+          'title',
+          'body',
+          'created_at',
+          'updated_at',
+        ]);
+        expect(resp.body.id, 'to be a', 'number');
+        expect(resp.body.id, 'to be', mockPost.id);
+        expect(resp.body.title, 'to be', mockPost.title);
+        expect(resp.body.body, 'to be', mockPost.body);
+        expect(resp.body.author, 'to be a', 'object');
+        expect(resp.body.author.id, 'to be', mockUser.id);
+        expect(resp.body.author.name, 'to be', mockUser.name);
+        done();
+      });
+  });
+
 
 });
