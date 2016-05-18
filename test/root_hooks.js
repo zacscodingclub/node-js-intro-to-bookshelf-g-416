@@ -6,6 +6,3 @@ before((done) => {
   blog.up().then(done);
 });
 
-after((done) => {
-  blog.tearDown().then(done);
-});

@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "export NODE_ENV=testing; mocha -R mocha-multi --reporter-options spec=-,json=.results.json"
+    "test": "export NODE_ENV=testing; mocha -R mocha-multi --reporter-options spec=-,json=.results.json",
+    "start": "export NODE_ENV=development; node run-server.js"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -25,7 +26,7 @@
     "body-parser": "^1.15.1",
     "bookshelf": "^0.9.5",
     "express": "^4.13.4",
-    "knex": "^0.11.3",
+    "knex": "^0.10.0",
     "pg": "^4.5.5"
   }
 }

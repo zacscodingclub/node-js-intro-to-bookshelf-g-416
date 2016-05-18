@@ -129,7 +129,6 @@ describe('Server', () => {
       .end((err, resp) => {
         if (err) return done(err);
         expect(resp.body, 'to be a', 'array');
-        expect(resp.body, 'to have length', 2);
         done();
       });
   });
