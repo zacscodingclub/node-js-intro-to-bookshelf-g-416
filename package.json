@@ -1,0 +1,21 @@
+{
+  "name": "node-js-intro-to-bookshelf",
+  "version": "1.0.0",
+  "description": "Introduction to Bookshelf (Lab)",
+  "main": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "export NODE_ENV=testing; mocha -R mocha-multi --reporter-options spec=-,json=.results.json"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "mocha-multi": "^0.9.0"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "Ethan Miller",
+  "license": "ISC"
+}
