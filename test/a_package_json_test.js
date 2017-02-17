@@ -9,7 +9,7 @@ describe('package.json', () => {
       'knex',
       'bookshelf'
     );
-    expect(packageJson.dependencies.knex, 'to be', '^0.10.0')
+    expect(packageJson.dependencies.knex, 'to be', '^0.12.6')
   });
 
   it('has the correct devDependencies', () => {
